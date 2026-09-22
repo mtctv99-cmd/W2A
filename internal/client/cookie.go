@@ -426,6 +426,18 @@ func GetHealthyAccountCount() int {
 	return count
 }
 
+func GetAuthenticatedAccountCount() int {
+	pool.mu.RLock()
+	defer pool.mu.RUnlock()
+	count := 0
+	for _, acc := range pool.Accounts {
+		if isHealthy(acc.ID) && IsAuthenticated(acc.Cookie) {
+			count++
+		}
+	}
+	return count
+}
+
 func GetAccounts() []AccountCookie {
 	pool.mu.RLock()
 	defer pool.mu.RUnlock()

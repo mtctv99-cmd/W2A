@@ -587,7 +587,12 @@ func HandleAdminModels(w http.ResponseWriter, r *http.Request) {
 	if setupCORS(w, r) {
 		return
 	}
-	sendJSON(w, map[string]interface{}{"models": config.GetModels()}, http.StatusOK)
+	sendJSON(w, map[string]interface{}{
+		"models":           GetActiveSupportedModels(),
+		"all_models":       config.GetModels(),
+		"has_google_auth":  client.GetAuthenticatedAccountCount() > 0,
+		"has_copilot_auth": copilot.GetHealthyAccountCount() > 0,
+	}, http.StatusOK)
 }
 
 func HandleSyncModels(w http.ResponseWriter, r *http.Request) {
@@ -667,6 +672,34 @@ func readLastLines(path string, maxLines int) string {
 // OPENAI API HANDLERS
 // -------------------------------------------------------------
 
+func GetActiveSupportedModels() map[string]config.ModelCfg {
+	all := config.GetModels()
+	hasGoogleAuth := client.GetAuthenticatedAccountCount() > 0
+	hasCopilotAuth := copilot.GetHealthyAccountCount() > 0
+
+	active := make(map[string]config.ModelCfg)
+	for name, cfg := range all {
+		isCopilot := strings.HasPrefix(name, "copilot") || strings.HasPrefix(name, "gpt-") || strings.HasPrefix(name, "dall-e")
+		if isCopilot {
+			if hasCopilotAuth {
+				active[name] = cfg
+			}
+			continue
+		}
+
+		// Google Gemini models
+		if !hasGoogleAuth {
+			// Without Google login, Google only supports Guest mode on gemini-3.5-flash-lite!
+			if name == "gemini-3.5-flash-lite" {
+				active[name] = cfg
+			}
+		} else {
+			active[name] = cfg
+		}
+	}
+	return active
+}
+
 func HandleModels(w http.ResponseWriter, r *http.Request) {
 	if setupCORS(w, r) {
 		return
@@ -677,14 +710,15 @@ func HandleModels(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	activeModels := GetActiveSupportedModels()
 	var data []map[string]interface{}
-		for name := range config.GetModels() {
-			ownedBy := "google"
-			if strings.HasPrefix(name, "copilot") {
-				ownedBy = "microsoft"
-			} else if strings.HasPrefix(name, "gpt-") || strings.HasPrefix(name, "dall-e") {
-				ownedBy = "openai"
-			}
+	for name := range activeModels {
+		ownedBy := "google"
+		if strings.HasPrefix(name, "copilot") {
+			ownedBy = "microsoft"
+		} else if strings.HasPrefix(name, "gpt-") || strings.HasPrefix(name, "dall-e") {
+			ownedBy = "openai"
+		}
 		data = append(data, map[string]interface{}{
 			"id":       name,
 			"object":   "model",
@@ -824,11 +858,90 @@ func HandleChatCompletions(w http.ResponseWriter, r *http.Request) {
 					cookieStr, sapisid, accountID, _ = client.GetNextCookieForType(client.PoolTypeWorker)
 				}
 			}
-		if cookieStr == "" {
-			log.Printf("[Pool] No healthy accounts available (attempt %d/%d)\n", attempt+1, maxRetries)
-			lastErr = fmt.Errorf("no healthy accounts available")
-			break
-		}
+			if cookieStr == "" {
+				if modelName == "gemini-3.5-flash-lite" || client.GetAuthenticatedAccountCount() == 0 {
+					log.Printf("[GuestMode] Executing via Gemini Flash-Lite Guest mode (no accounts required)...\n")
+					reply, guestErr := browser.GenerateGuestChat(r.Context(), prompt)
+					if guestErr == nil && reply != "" {
+						cid := fmt.Sprintf("chatcmpl-%d", time.Now().UnixNano())
+						if req.Stream {
+							flusher, ok := w.(http.Flusher)
+							if ok {
+								w.Header().Set("Content-Type", "text/event-stream")
+								w.Header().Set("Cache-Control", "no-cache")
+								w.Header().Set("Connection", "keep-alive")
+								w.Header().Set("Access-Control-Allow-Origin", "*")
+								w.WriteHeader(http.StatusOK)
+
+								chunk := map[string]interface{}{
+									"id":      cid,
+									"object":  "chat.completion.chunk",
+									"created": time.Now().Unix(),
+									"model":   "gemini-3.5-flash-lite",
+									"choices": []map[string]interface{}{
+										{
+											"index":         0,
+											"delta":         map[string]string{"content": reply},
+											"finish_reason": nil,
+										},
+									},
+								}
+								data, _ := json.Marshal(chunk)
+								fmt.Fprintf(w, "data: %s\n\n", data)
+								stopChunk := map[string]interface{}{
+									"id":      cid,
+									"object":  "chat.completion.chunk",
+									"created": time.Now().Unix(),
+									"model":   "gemini-3.5-flash-lite",
+									"choices": []map[string]interface{}{
+										{
+											"index":         0,
+											"delta":         map[string]interface{}{},
+											"finish_reason": "stop",
+										},
+									},
+								}
+								stopData, _ := json.Marshal(stopChunk)
+								fmt.Fprintf(w, "data: %s\n\n", stopData)
+								fmt.Fprintf(w, "data: [DONE]\n\n")
+								flusher.Flush()
+								stats.UpdateStats(int64((len(prompt) + len(reply)) / 4))
+								return
+							}
+						}
+						resp := map[string]interface{}{
+							"id":      cid,
+							"object":  "chat.completion",
+							"created": time.Now().Unix(),
+							"model":   "gemini-3.5-flash-lite",
+							"choices": []map[string]interface{}{
+								{
+									"index": 0,
+									"message": map[string]interface{}{
+										"role":    "assistant",
+										"content": reply,
+									},
+									"finish_reason": "stop",
+								},
+							},
+							"usage": map[string]interface{}{
+								"prompt_tokens":     len(prompt) / 4,
+								"completion_tokens": len(reply) / 4,
+								"total_tokens":      (len(prompt) + len(reply)) / 4,
+							},
+						}
+						stats.UpdateStats(int64((len(prompt) + len(reply)) / 4))
+						sendJSON(w, resp, http.StatusOK)
+						return
+					}
+					lastErr = fmt.Errorf("guest mode error: %v", guestErr)
+				}
+				log.Printf("[Pool] No healthy accounts available (attempt %d/%d)\n", attempt+1, maxRetries)
+				if lastErr == nil {
+					lastErr = fmt.Errorf("no healthy accounts available (model %s requires an authenticated account)", modelName)
+				}
+				break
+			}
 		log.Printf("[Pool] Attempt %d/%d: %s (images: %d, role: %s)\n", attempt+1, maxRetries, accountID, len(parsedImages), poolRole)
 
 		var fileRefs []client.UploadedFile

@@ -26,15 +26,21 @@ Hệ thống reverse-engineer giao thức nội bộ của Gemini Web và Micros
 
 | Model ID | Engine | Mô tả |
 |---|:---:|---|
-| `gemini-3.8-flash` *(Default)* | Gemini | Flagship Gemini thế hệ 3.8, tốc độ cao, đa năng |
-| `gemini-3.8-thinking` | Gemini | Tư duy mở rộng, giải toán & phân tích logic chuyên sâu |
-| `gemini-3.1-pro` | Gemini | Lý luận nâng cao, lập trình & suy luận phức tạp |
+| `gemini-3.8-flash` *(Default)* | Gemini | Flagship Gemini thế hệ 3.8, tốc độ cao, đa năng (Cần tài khoản) |
+| `gemini-3.8-thinking` | Gemini | Tư duy mở rộng, giải toán & phân tích logic chuyên sâu (Cần tài khoản) |
+| `gemini-3.1-pro` | Gemini | Lý luận nâng cao, lập trình & suy luận phức tạp (Cần tài khoản) |
+| `gemini-3.5-flash-lite` | Gemini | Flash-Lite siêu tốc, hỗ trợ cả **Guest mode (không cần đăng nhập tài khoản)** |
 | `gemini-imagen` | Gemini | Tạo ảnh chất lượng cao Google Imagen 3 (Fast RPC + Playwright Fallback) |
 | `gemini-veo` | Gemini | Tạo video AI chất lượng cao qua Playwright CDP |
 | `gpt-5.6-think` | Copilot | OpenAI GPT-5.6 Reasoning model (Think Deeper) qua SignalR |
 | `copilot-quick` / `gpt-5.6` | Copilot | Phản hồi siêu tốc qua cụm máy chủ Microsoft 365 (~4s) |
 | `copilot-auto` | Copilot | Copilot tự cân bằng giữa tốc độ và chiều sâu câu trả lời |
 | `dall-e-3` / `copilot-image` | Copilot | Tạo ảnh nghệ thuật DALL-E 3 gốc PNG 2048x2048 lưu tại local URL |
+
+> 💡 **Cơ chế lọc Model tự động theo trạng thái Pool:**
+> - **Khi chưa đăng nhập tài khoản Google:** Danh sách `/v1/models` tự động ẩn các model yêu cầu tài khoản (`3.8 Flash`, `Thinking`, `Pro`, `Imagen`, `Veo`), và **chỉ hiển thị duy nhất `gemini-3.5-flash-lite`** (cho phép chat ngay lập tức ở chế độ Guest).
+> - **Khi đã đăng nhập tài khoản Google:** Tự động mở khóa toàn bộ danh mục model Gemini cao cấp.
+> - **Tương tự với Copilot:** Các model Copilot / GPT-5.6 / DALL-E 3 chỉ hiển thị khi có ít nhất 1 tài khoản Copilot đang hoạt động.
 
 ---
 

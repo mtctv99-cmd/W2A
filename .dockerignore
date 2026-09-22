@@ -1,0 +1,7 @@
+data/
+geminigo
+geminigo_new
+.git
+.github
+*.log
+*.tmp

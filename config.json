@@ -1,0 +1,149 @@
+{
+  "port": 8081,
+  "host": "0.0.0.0",
+  "retry_attempts": 3,
+  "retry_delay_sec": 2,
+  "request_timeout_sec": 180,
+  "gemini_bl": "boq_assistant-bard-web-server_20260525.09_p0",
+  "auth_user": "",
+  "xsrf_token": "",
+  "default_model": "gemini-3.8-flash",
+  "log_requests": true,
+  "cookie_file": "",
+  "proxy": "",
+  "require_auth": false,
+  "api_keys": null,
+  "rate_limit": 0,
+  "models": {
+    "copilot-auto": {
+      "mode": 100,
+      "think": 4,
+      "desc": "Microsoft 365 Copilot Auto - Tự động điều chỉnh",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "copilot-image": {
+      "mode": 105,
+      "think": 0,
+      "desc": "Microsoft Copilot DALL-E 3 - Tạo ảnh nghệ thuật độ phân giải cao",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "copilot-m365": {
+      "mode": 100,
+      "think": 4,
+      "desc": "Microsoft 365 Copilot Standard Mode",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "copilot-quick": {
+      "mode": 101,
+      "think": 0,
+      "desc": "Microsoft 365 Copilot Quick response - Phản hồi nhanh tức thì (~4s)",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "copilot-think": {
+      "mode": 102,
+      "think": 4,
+      "desc": "Microsoft 365 Copilot Think deeper - Suy nghĩ sâu cho câu hỏi khó",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "dall-e-3": {
+      "mode": 105,
+      "think": 0,
+      "desc": "OpenAI DALL-E 3 (via Copilot) - Tạo hình ảnh AI chất lượng cao 2048x2048",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "gemini-3.1-pro": {
+      "mode": 3,
+      "think": 4,
+      "desc": "Official 3.1 Pro - Suy luận nâng cao"
+    },
+    "gemini-3.5-flash": {
+      "mode": 1,
+      "think": 4,
+      "desc": "Gemini 3.5 Flash - Legacy web chat",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "free_recommended"
+    },
+    "gemini-3.5-flash-lite": {
+      "mode": 6,
+      "think": 4,
+      "desc": "Official 3.5 Flash-Lite - Câu trả lời nhanh nhất"
+    },
+    "gemini-3.7-flash": {
+      "mode": 10,
+      "think": 4,
+      "desc": "Gemini 3.7 Flash - High-speed reasoning",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "free_recommended"
+    },
+    "gemini-3.7-thinking": {
+      "mode": 2,
+      "think": 4,
+      "desc": "Gemini 3.7 Thinking - Chain-of-thought deep reasoning",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "web_thinking"
+    },
+    "gemini-3.8-flash": {
+      "mode": 10,
+      "think": 4,
+      "desc": "Official 3.8 Flash - Trợ giúp toàn diện"
+    },
+    "gemini-3.8-thinking": {
+      "mode": 2,
+      "think": 4,
+      "desc": "Official Tư duy mở rộng - Giải quyết vấn đề phức tạp"
+    },
+    "gemini-imagen": {
+      "mode": 10,
+      "think": 0,
+      "desc": "Imagen 3 - Image generation (Playwright CDP)",
+      "source": "media_cdp",
+      "input_limit": 1000,
+      "category": "media"
+    },
+    "gemini-veo": {
+      "mode": 10,
+      "think": 0,
+      "desc": "Google Veo - Video generation (Playwright CDP)",
+      "source": "media_cdp",
+      "input_limit": 1000,
+      "category": "media"
+    },
+    "gpt-4o": {
+      "mode": 104,
+      "think": 0,
+      "desc": "Alias for GPT-5.6 / Copilot",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "gpt-5.6": {
+      "mode": 104,
+      "think": 0,
+      "desc": "OpenAI GPT-5 (Alias)",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "gpt-5.6-quick": {
+      "mode": 104,
+      "think": 0,
+      "desc": "OpenAI GPT-5 Fast response mode",
+      "source": "copilot_ws",
+      "category": "copilot"
+    },
+    "gpt-5.6-think": {
+      "mode": 103,
+      "think": 4,
+      "desc": "OpenAI GPT-5 Reasoning model (Think deeper)",
+      "source": "copilot_ws",
+      "category": "copilot"
+    }
+  }
+}

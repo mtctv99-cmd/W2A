@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeminiGo Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">G</div>
+                <h2>Gemini<span>Go</span></h2>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="overview">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                    Overview
+                </button>
+                <button class="nav-item" data-tab="cookies">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    Google Cookies
+                </button>
+                <button class="nav-item" data-tab="copilot">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                    MS Copilot
+                </button>
+                <button class="nav-item" data-tab="apikeys">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    API Keys
+                </button>
+                <button class="nav-item" data-tab="models">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v-2H7v-2h7V9H7V7h7v10z"/></svg>
+                    Models
+                </button>
+                <button class="nav-item" data-tab="logs">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 12H4v-2h11v-2H4V9h11V7H4V5h11v11z"/></svg>
+                    Live Logs
+                </button>
+                <button class="nav-item" data-tab="guide">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    Guide / Docs
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Status: <span class="status-indicator online"></span> Running</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- TAB: OVERVIEW -->
+            <section id="overview" class="tab-content active">
+                <header class="content-header">
+                    <h1>System Overview</h1>
+                    <p>Real-time gateway statistics and request telemetry</p>
+                </header>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="card-icon request-glow">
+                            <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                        </div>
+                        <div class="card-details">
+                            <h3>Total Requests</h3>
+                            <p id="stat-requests">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="card-icon token-glow">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                        </div>
+                        <div class="card-details">
+                            <h3>Total Tokens</h3>
+                            <p id="stat-tokens">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="card-icon cookie-glow">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </div>
+                        <div class="card-details">
+                            <h3>Active Accounts</h3>
+                            <p id="stat-cookies">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="card-icon apikey-glow">
+                            <svg viewBox="0 0 24 24"><path d="M12.65 11.3c.2-.3.35-.64.45-1 .34-1.24-.04-2.58-.95-3.5a4.013 4.013 0 0 0-4.9-.75l1.9 1.9-1.4 1.4-1.9-1.9c-.83.82-1.13 2.03-.75 3.09.1.36.25.7.45 1l-5 5v3h3l5-5z"/></svg>
+                        </div>
+                        <div class="card-details">
+                            <h3>API Keys</h3>
+                            <p id="stat-apikeys">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Traffic Telemetry</h2>
+                    <div class="glass-panel">
+                        <div class="info-row">
+                            <span>Base API URL:</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <code id="api-base-url">http://localhost:8081/v1</code>
+                                <button id="btn-copy-api-url" class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;">Copy URL</button>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span>Last Request Time:</span>
+                            <span id="stat-last-request">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Access Mode:</span>
+                            <span id="stat-auth-mode" class="badge badge-success">Public (Open)</span>
+                        </div>
+                        <div class="info-row">
+                            <span>Active Auto-Login Browser:</span>
+                            <span id="stat-browser-running" class="badge">Checking...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: COOKIES -->
+            <section id="cookies" class="tab-content">
+                <header class="content-header">
+                    <h1>Google Accounts Pool</h1>
+                    <p>Connect accounts via browser automation for multi-account load balancing & rotation</p>
+                </header>
+
+                <div class="glass-panel" style="margin-bottom: 16px; padding: 12px 16px; border-radius: 8px; font-size: 13px; color: #cbd5e1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <strong>Phân bổ tài nguyên 40/60:</strong> 
+                        <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.4);">🎯 Session Reuse Pool (40%)</span> duy trì mạch ngữ cảnh web và 
+                        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4);">⚡ Worker Pool (60%)</span> xoay vòng tải cao. Tự động mượn 1-2 tài khoản khi quá tải.
+                    </div>
+                </div>
+
+                <div class="action-bar" style="display: flex; gap: 12px;">
+                    <button id="btn-auto-login" class="btn btn-primary btn-glow">
+                        <svg class="icon-small" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Auto Connect Browser (Login Google)
+                    </button>
+                    <button id="btn-refresh-accounts" class="btn btn-secondary">
+                        <svg class="icon-small" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                        Auto-Refresh Profiles & Cookies
+                    </button>
+                </div>
+
+                <div class="account-list">
+                    <h2>Active Accounts Pool</h2>
+                    <div id="accounts-container" class="pool-grid">
+                        <p class="empty-state">No accounts loaded. Click "Auto Connect Browser" to add one.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: COPILOT -->
+            <section id="copilot" class="tab-content">
+                <header class="content-header">
+                    <h1>MS Copilot & GPT-5</h1>
+                    <p>Quản lý phiên đăng nhập M365 và WebSocket Sydney</p>
+                </header>
+
+                <div class="glass-panel" style="margin-bottom: 16px; padding: 12px 16px; border-radius: 8px; font-size: 13px; color: #cbd5e1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <strong>Phân bổ Copilot 40/60:</strong> 
+                        <span class="badge" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.4);">🎯 Session Reuse Pool (40%)</span> ghim phiên Sydney và 
+                        <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4);">⚡ Worker Pool (60%)</span> chạy stateless. Tự động mượn 1-2 tài khoản khi quá tải.
+                    </div>
+                </div>
+
+                <div class="glass-panel" style="margin-bottom: 20px; padding: 20px; border-radius: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <div style="font-size: 15px; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; gap: 8px;">
+                                <span id="copilot-user">Đang tải...</span>
+                                <span id="copilot-status-badge" class="badge badge-error">HẾT HẠN</span>
+                            </div>
+                            <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+                                Thời hạn: <span id="copilot-timer" style="color: #34d399; font-weight: 600;">--</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button id="btn-copilot-add-account" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;">
+                                <svg class="icon-small" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                Thêm tài khoản mới
+                            </button>
+                            <button id="btn-copilot-auto-login" class="btn btn-secondary btn-glow" style="padding: 8px 16px; font-size: 13px;">
+                                <svg class="icon-small" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                Đăng nhập Chrome (AnyDesk: 1846856259)
+                            </button>
+                            <button id="btn-copilot-stop-login" class="btn btn-danger" style="padding: 8px 16px; font-size: 13px; display: none;">
+                                🛑 Dừng Chrome
+                            </button>
+                            <button id="btn-copilot-refresh" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">
+                                <svg class="icon-small" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+                                Làm mới Tất cả
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px;">
+                        <p style="font-size: 12px; color: #94a3b8; margin: 0 0 8px 0;">
+                            💡 Nếu đăng nhập từ máy tính này: mở <a href="https://m365.cloud.microsoft/chat" target="_blank" style="color: #60a5fa; text-decoration: underline;">m365.cloud.microsoft/chat</a> &rarr; F12 &rarr; Network &rarr; WS &rarr; copy URL <b>Chathub</b> dán vào bên dưới:
+                        </p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <select id="select-copilot-token-account" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 9px 12px; border-radius: 8px; color: white; font-size: 13px;">
+                                <option value="">Tự động khớp / Mặc định</option>
+                            </select>
+                            <input type="text" id="input-copilot-token" placeholder="Dán wss://substrate.office.com/m365Copilot/Chathub/... vào đây" 
+                                   style="flex: 1; min-width: 240px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 9px 14px; border-radius: 8px; color: white; font-size: 13px; font-family: monospace;">
+                            <button id="btn-save-copilot-token" class="btn btn-primary" style="white-space: nowrap; padding: 9px 18px;">
+                                Lưu Token
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-list" style="margin-top: 24px;">
+                    <h2>Danh sách tài khoản Copilot (Pool)</h2>
+                    <div id="copilot-accounts-container" class="pool-grid">
+                        <p class="empty-state">Chưa có tài khoản Copilot nào. Dán token URL hoặc bấm Đăng nhập Chrome để thêm.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB: API KEYS -->
+            <section id="apikeys" class="tab-content">
+                <header class="content-header">
+                    <h1>API Authorization Keys</h1>
+                    <p>Manage API keys used to secure the proxy gateway</p>
+                </header>
+
+                <div class="glass-panel" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-radius: 12px;">
+                    <div>
+                        <h3 style="margin: 0 0 6px 0; font-size: 16px; color: #f1f5f9;">API Authentication Mode</h3>
+                        <p style="margin: 0; font-size: 13px; color: var(--text-muted);">
+                            Current status: <span id="auth-mode-badge" class="badge badge-success">Public (No Key Required)</span>
+                            <span id="auth-mode-desc" style="margin-left: 8px; color: #94a3b8;">Anyone can make API calls without authentication.</span>
+                        </p>
+                    </div>
+                    <button id="btn-toggle-auth" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">
+                        Switch to Protected Mode
+                    </button>
+                </div>
+
+                <div class="action-bar-split">
+                    <div class="input-group">
+                        <input type="text" id="input-new-key" placeholder="Enter custom API key or leave blank to auto-generate...">
+                        <button id="btn-add-key" class="btn btn-primary">Add API Key</button>
+                    </div>
+                </div>
+
+                <div class="apikey-list">
+                    <h2>Active Keys</h2>
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>API Key Prefix</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apikeys-table-body">
+                            <tr>
+                                <td colspan="2" class="empty-state">No active keys. Anyone can request the API.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+	            <!-- TAB: MODELS -->
+	            <section id="models" class="tab-content">
+	                <header class="content-header" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+	                    <div>
+		                        <h1>Supported Models Registry</h1>
+		                        <p>Live synchronized models from Gemini Web Chat & Media CDP</p>
+		                    </div>
+		                    <button id="btn-sync-models" class="btn btn-secondary" style="margin-bottom: 8px;">
+		                        <svg class="icon-small" viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+		                        Sync Web Models
+		                    </button>
+		                </header>
+
+			                <!-- Model Search & Category Filter Bar -->
+			                <div class="glass-panel" style="margin-bottom: 20px; padding: 12px 16px; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+			                    <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="model-category-filters">
+			                        <button class="btn btn-secondary filter-btn active" data-filter="all" style="padding: 4px 12px; font-size: 12px;">Tất cả</button>
+			                        <button class="btn btn-secondary filter-btn" data-filter="gemini" style="padding: 4px 12px; font-size: 12px;">⚡ Google Gemini</button>
+			                        <button class="btn btn-secondary filter-btn" data-filter="media" style="padding: 4px 12px; font-size: 12px;">🎨 Media (Ảnh/Video)</button>
+			                        <button class="btn btn-secondary filter-btn" data-filter="copilot" style="padding: 4px 12px; font-size: 12px;">🤖 Copilot & GPT-5</button>
+			                    </div>
+			                    <div style="flex: 1; max-width: 300px; min-width: 180px;">
+			                        <input type="text" id="model-search" placeholder="Tìm kiếm model..." style="width: 100%; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: #fff; font-size: 12px;">
+			                    </div>
+			                </div>
+
+	                <div class="models-grid" id="models-container">
+	                    <!-- Cards will be populated dynamically -->
+	                </div>
+	            </section>
+
+            <!-- TAB: LOGS -->
+            <section id="logs" class="tab-content">
+                <header class="content-header">
+                    <h1>Live Server Logs</h1>
+                    <p>Real-time gateway logs and error diagnostics</p>
+                </header>
+
+                <div class="console-wrapper">
+                    <div class="console-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="console-title">geminigo.log</span>
+                        <button id="btn-clear-logs" class="console-clear">Clear View</button>
+                    </div>
+                    <pre class="console-body" id="logs-terminal">Initializing terminal connection...</pre>
+                </div>
+            </section>
+
+            <!-- TAB: GUIDE -->
+            <section id="guide" class="tab-content">
+                <header class="content-header">
+                    <h1>Integration Guide & API Documentation</h1>
+                    <p>Complete setup guide, multi-turn session persistence, and code examples for GeminiGo</p>
+                </header>
+
+                <div class="docs-section">
+                    <h2>1. Interactive IDE & Client Setup</h2>
+                    <p>GeminiGo is fully OpenAI-API compatible. Use it seamlessly with your favorite tools:</p>
+                    
+                    <h3 style="margin-top: 15px; color: #a78bfa;">Cursor IDE</h3>
+                    <ol>
+                        <li>Open Cursor Settings (<code>Ctrl + ,</code> / <code>Cmd + ,</code>).</li>
+                        <li>Navigate to <strong>Models</strong> &rarr; <strong>OpenAI API</strong>.</li>
+                        <li>Set <strong>Override OpenAI Base URL</strong> to: <code><span class="guide-url">http://localhost:8081/v1</span></code></li>
+                        <li>Enter any API key configured in the <strong>API Keys</strong> tab.</li>
+                        <li>Add model IDs: <code>gemini-3.7-flash</code> hoặc <code>gemini-3.7-pro</code>.</li>
+                    </ol>
+
+                    <h3 style="margin-top: 15px; color: #a78bfa;">Cline / Roo Code / Continue (VS Code)</h3>
+                    <ul>
+                        <li>Provider: Select <strong>OpenAI Compatible</strong></li>
+                        <li>Base URL: <code><span class="guide-url">http://localhost:8081/v1</span></code></li>
+                        <li>Model ID: <code>gemini-3.7-flash</code> hoặc <code>gemini-3.7-pro</code></li>
+                    </ul>
+                </div>
+
+                <div class="docs-section">
+                    <h2>2. Session Context Retention (X-Session-ID)</h2>
+                    <p>Pass a custom <code>X-Session-ID</code> header to maintain persistent browser sessions for <strong>image and video generation</strong>. The same Google Gemini conversation context is reused across requests with the same session ID:</p>
+                    <pre style="background: #0f172a; padding: 15px; border-radius: 8px; color: #38bdf8; font-size: 13px; overflow-x: auto;">
+# X-Session-ID works for image/video generation (NOT chat):
+curl -X POST http://localhost:8081/v1/videos/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Session-ID: sess_video_001" \
+  -d '{
+    "model": "gemini-veo",
+    "prompt": "A cute kitten playing with a ball of blue yarn"
+  }'
+</pre>
+                    <p style="font-size: 13px; color: #f87171;"><strong>Note:</strong> Chat completions (<code>/v1/chat/completions</code>) are stateless — send full message history with each request. X-Session-ID only affects media generation pipelines. If your server has no API keys configured, omit the Authorization header.</p>
+                </div>
+
+                <div class="docs-section">
+                    <h2>3. Image Generation API (Imagen 3)</h2>
+                    <p>Generate high-quality images via Playwright CDP browser pipeline. Images are captured as Base64 JPEG data URL or hosted file URLs:</p>
+                    <pre style="background: #0f172a; padding: 15px; border-radius: 8px; color: #38bdf8; font-size: 13px; overflow-x: auto;">
+# Request Image Generation (Base64 JPEG) — replace YOUR_API_KEY with a key from the API Keys tab
+curl -X POST http://localhost:8081/v1/images/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "prompt": "A futuristic glowing cybernetic panther in a neon city",
+    "model": "gemini-imagen",
+    "response_format": "b64_json"
+  }'
+
+# Python Example — set your API key
+import requests, json, base64
+
+response = requests.post("http://localhost:8081/v1/images/generations",
+    headers={"Authorization": "Bearer YOUR_API_KEY"},
+    json={
+        "prompt": "A serene lotus pond at sunset, watercolor digital art",
+        "model": "gemini-imagen",
+        "response_format": "b64_json"
+    }
+)
+b64_data = response.json()['data'][0]['b64_json']
+with open("output.jpg", "wb") as f:
+    f.write(base64.b64decode(b64_data))
+print("Saved output.jpg successfully!")
+</pre>
+                </div>
+
+                <div class="docs-section">
+                    <h2>4. Video Generation API (Gemini Veo)</h2>
+                    <p>Generate MP4 videos powered by Google Veo with persistent session retention. Videos are downloaded via Chrome browser events and hosted locally under <code>/v1/files/</code>:</p>
+                    <pre style="background: #0f172a; padding: 15px; border-radius: 8px; color: #38bdf8; font-size: 13px; overflow-x: auto;">
+# Request Video Generation — replace YOUR_API_KEY with a key from the API Keys tab
+curl -X POST http://localhost:8081/v1/videos/generations \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Session-ID: sess_video_001" \
+  -d '{
+    "prompt": "A cute kitten playing with a ball of blue yarn",
+    "model": "gemini-veo"
+  }'
+
+# Response Example:
+# {
+#   "created": 1785258686,
+#   "data": [{
+#     "revised_prompt": "Generate a video of A cute kitten playing with a ball of blue yarn",
+#     "url": "http://localhost:8081/v1/files/video_1785258686_ZCCCCB.mp4"
+#   }]
+# }
+</pre>
+                </div>
+
+                <div class="docs-section">
+                    <h2>5. Supported Model Reference Table</h2>
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Model Alias</th>
+                                <th>Target Provider</th>
+                                <th>Category / Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>gemini-3.8-flash</code></td>
+                                <td>Official Gemini 3.8 Flash</td>
+                                <td>Flagship 3.8 - All-around help (Default fast model)</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.8-thinking</code></td>
+                                <td>Official Gemini 3.8 Thinking</td>
+                                <td>Tư duy mở rộng - Extended thinking & deep reasoning</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.1-pro</code></td>
+                                <td>Official Gemini 3.1 Pro</td>
+                                <td>Advanced reasoning, math & deep coding model</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.5-flash-lite</code></td>
+                                <td>Official Gemini 3.5 Flash-Lite</td>
+                                <td>Fastest answers lightweight model</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.7-flash</code></td>
+                                <td>Official Gemini 3.7 Flash</td>
+                                <td>All-around help model</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.7-pro</code></td>
+                                <td>Official Gemini 3.7 Pro</td>
+                                <td>Advanced reasoning model</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-3.7-thinking</code></td>
+                                <td>Official Gemini 3.7 Thinking</td>
+                                <td>Deep reasoning & thinking mode</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-imagen</code></td>
+                                <td>Imagen 3</td>
+                                <td>High-fidelity image generation pipeline</td>
+                            </tr>
+                            <tr>
+                                <td><code>gemini-veo</code></td>
+                                <td>Google Veo</td>
+                                <td>High-definition MP4 video generation pipeline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">Full model list available at <code>GET /v1/models</code>. Default model when omitted: <code>gemini-3.8-flash</code>.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Action completed successfully</div>
+
+    <script src="/static/app.js?v=2.2"></script>
+</body>
+</html>

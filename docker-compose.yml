@@ -1,0 +1,9 @@
+services:
+  geminigo:
+    build: .
+    container_name: geminigo
+    network_mode: host
+    volumes:
+      - ./data:/app/data
+      - ./config.json:/app/config.json
+    restart: always

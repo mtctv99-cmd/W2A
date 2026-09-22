@@ -70,14 +70,20 @@ var MODELS = map[string]ModelCfg{
 		Desc:     "Gemini 3.8 Thinking - Tư duy mở rộng, giải bài toán phức tạp",
 		Category: "gemini",
 	},
-	"gemini-3.1-pro": {
-		Mode:     3,
-		Think:    4,
-		Desc:     "Gemini 3.1 Pro - Lý luận nâng cao, lập trình & toán học",
-		Category: "gemini",
-	},
+		"gemini-3.1-pro": {
+			Mode:     3,
+			Think:    4,
+			Desc:     "Gemini 3.1 Pro - Lý luận nâng cao, lập trình & toán học",
+			Category: "gemini",
+		},
+		"gemini-3.5-flash-lite": {
+			Mode:     6,
+			Think:    0,
+			Desc:     "Gemini 3.5 Flash-Lite - Hỗ trợ cả chế độ Guest (không cần đăng nhập) và tài khoản Google",
+			Category: "gemini",
+		},
 
-	// 2. Google Media (Playwright CDP)
+		// 2. Google Media (Playwright CDP)
 	"gemini-imagen": {
 		Mode:     10,
 		Think:    0,
@@ -207,8 +213,10 @@ func ResolveModelAlias(modelName string) string {
 			return "copilot-quick"
 		case "copilot-think", "gpt-5.6-think", "gpt-5-think":
 			return "gpt-5.6-think"
-		case "gemini-flash", "gemini-2.0-flash", "gemini-2.5-flash", "gemini-auto", "flash", "gemini-3.8", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-lite":
+		case "gemini-flash", "gemini-2.0-flash", "gemini-2.5-flash", "gemini-auto", "flash", "gemini-3.8", "gemini-3.7-flash", "gemini-3.6-flash", "gemini-3.5-flash":
 			return "gemini-3.8-flash"
+		case "gemini-3.5-flash-lite", "gemini-flash-lite", "flash-lite", "3.5-flash-lite", "lite":
+			return "gemini-3.5-flash-lite"
 		case "gemini-thinking", "gemini-2.0-flash-thinking", "gemini-2.5-flash-thinking", "thinking", "tư duy mở rộng", "gemini-3.8-thinking", "gemini-3.7-thinking", "gemini-3.6-thinking", "gemini-3.5-flash-thinking", "gemini-3.5-flash-thinking-lite":
 			return "gemini-3.8-thinking"
 		case "gemini-pro", "gemini-2.0-pro", "gemini-2.5-pro", "pro", "gemini-3.1-pro", "gemini-3.7-pro":

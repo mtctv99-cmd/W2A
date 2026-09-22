@@ -60,7 +60,10 @@
     "gemini-3.1-pro": {
       "mode": 3,
       "think": 4,
-      "desc": "Official 3.1 Pro - Suy luận nâng cao"
+      "desc": "Gemini 3.1 Pro - Complex reasoning \u0026 code",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "pro"
     },
     "gemini-3.5-flash": {
       "mode": 1,
@@ -73,7 +76,10 @@
     "gemini-3.5-flash-lite": {
       "mode": 6,
       "think": 4,
-      "desc": "Official 3.5 Flash-Lite - Câu trả lời nhanh nhất"
+      "desc": "Gemini 3.5 Flash Lite - Fast response",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "free_recommended"
     },
     "gemini-3.7-flash": {
       "mode": 10,
@@ -94,12 +100,18 @@
     "gemini-3.8-flash": {
       "mode": 10,
       "think": 4,
-      "desc": "Official 3.8 Flash - Trợ giúp toàn diện"
+      "desc": "Gemini 3.8 Flash - Latest flagship, high-speed \u0026 all-around (Default)",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "free_recommended"
     },
     "gemini-3.8-thinking": {
       "mode": 2,
       "think": 4,
-      "desc": "Official Tư duy mở rộng - Giải quyết vấn đề phức tạp"
+      "desc": "Gemini 3.8 Thinking - Extended thinking \u0026 deep problem solving",
+      "source": "web_chat",
+      "input_limit": 1048576,
+      "category": "web_thinking"
     },
     "gemini-imagen": {
       "mode": 10,
